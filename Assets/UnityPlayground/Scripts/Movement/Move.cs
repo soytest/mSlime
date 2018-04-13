@@ -21,7 +21,16 @@ public class Move : Physics2DObject
     private Vector2 movement, cachedDirection;
     private float moveHorizontal;
     private float moveVertical;
-    bool FastMove = false;
+    bool FastMove = true;
+    Animator anim;
+    Transform Mytransform;
+
+    private void Start()
+    {
+        anim = GetComponent<Animator>();
+        Mytransform = transform;
+        OringinScale = Mytransform.localScale;
+    }
 
     // Update gets called every frame
     void Update()
@@ -40,10 +49,27 @@ public class Move : Physics2DObject
 
         if (FastMove)
         {
+            bool isWalk = false;
             if (Mathf.Abs(moveHorizontal) > 0.01f)
+            {
                 moveHorizontal = Mathf.Sign(moveHorizontal);
+                isWalk = true;
+            }
+                
             if (Mathf.Abs(moveVertical) > 0.01f)
+            {
                 moveVertical = Mathf.Sign(moveVertical);
+                isWalk = true;
+            }
+            if (isWalk)
+                anim.SetBool("Walk", true);
+            else
+                anim.SetBool("Walk", false);
+            //Player face left or right
+            if (moveHorizontal < -0.01f)
+                Mytransform.rotation = Quaternion.Euler(0, 180, 0);
+            else if(moveHorizontal > 0.01f)
+                Mytransform.rotation = Quaternion.Euler(0, 0, 0);
         }
 
 
@@ -73,7 +99,20 @@ public class Move : Physics2DObject
         }
     }
 
+    Vector3 OringinScale;
+    float OringinSpeed = 5;
 
+    public void ResetSpeedAndScale()
+    {
+        Mytransform.localScale = OringinScale;
+        speed = OringinSpeed;
+    }
+
+    public void ChangeSpeedAndScale(int n)
+    {
+        speed = OringinSpeed * (1 - 0.2f * n);
+        Mytransform.localScale = OringinScale * (1 + 0.2f * n);
+    }
 
     // FixedUpdate is called every frame when the physics are calculated
     void FixedUpdate()

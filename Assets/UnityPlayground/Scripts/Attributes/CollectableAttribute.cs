@@ -29,11 +29,17 @@ public class CollectableAttribute : MonoBehaviour
 			{
 				// add one point
 				int playerId = (playerTag == "Player") ? 0 : 1;
-				userInterface.AddOnePoint(playerId);
-			}
+				
 
-			// then destroy this object
-			Destroy(gameObject);
+                HealthSystemAttribute player = otherCollider.GetComponent<HealthSystemAttribute>();
+                //Could carry more slime
+                if (player && !player.IsMaxSave())
+                {
+                    player.SaveOneInjureSlime();
+                    player.GetComponent<Move>().ChangeSpeedAndScale(player.SaveCount);
+                    Destroy(gameObject);
+                }
+            }			
 		}
 	}
 }

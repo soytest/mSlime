@@ -46,6 +46,21 @@ public class HealthSystemAttribute : MonoBehaviour
         maxHealth = health; //note down the maximum health to avoid going over it when the player gets healed
     }
 
+    public int SaveCount = 0;
+    int MaxSaveAmount = 4;
+
+    public void SaveOneInjureSlime()
+    {
+        SaveCount += 1;
+    }
+
+    public bool IsMaxSave()
+    {
+        if (SaveCount < MaxSaveAmount)
+            return false;
+        else
+            return true;
+    }
 
     // changes the energy from the player
     // also notifies the UI (if present)

@@ -4,6 +4,7 @@ using System.Collections;
 [AddComponentMenu("Playground/Attributes/Health System")]
 public class HealthSystemAttribute : MonoBehaviour
 {
+    public int MaxHealth = 3;
     public int health = 3;
 
     private UIScript ui;
@@ -46,6 +47,11 @@ public class HealthSystemAttribute : MonoBehaviour
         maxHealth = health; //note down the maximum health to avoid going over it when the player gets healed
     }
 
+    public int GetplayerNumber()
+    {
+        return playerNumber;
+    }
+
     public int SaveCount = 0;
     int MaxSaveAmount = 4;
 
@@ -64,11 +70,11 @@ public class HealthSystemAttribute : MonoBehaviour
 
     // changes the energy from the player
     // also notifies the UI (if present)
-    public void ModifyHealth(int amount)
+    public bool ModifyHealth(int amount)
     {
         //Invincible time
         if (isInvincible())
-            return;
+            return false;
 
         //avoid going over the maximum health by forcin
         if (health + amount > maxHealth)
@@ -93,7 +99,11 @@ public class HealthSystemAttribute : MonoBehaviour
 
         //ChangeSpriteColor
         if (amount < 0)
+        {
             DamageSpriteShining();
+            return true;           
+        }
+        return false;
     }
 
     public Color HitColor = Color.red;

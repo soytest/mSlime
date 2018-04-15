@@ -35,7 +35,8 @@ public class Wander : Physics2DObject
 		startingPoint = transform.position;
 
 		StartCoroutine(ChangeDirection());
-	}
+        Mytransform = transform;
+    }
 
 
 
@@ -73,10 +74,16 @@ public class Wander : Physics2DObject
 	}
 
 
-
+    Transform Mytransform;
 	// FixedUpdate is called every frame when the physics are calculated
+
 	private void FixedUpdate()
 	{
-		rigidbody2D.AddForce(direction * speed);
+        if (direction.x > 0.01f)
+            Mytransform.rotation = Quaternion.Euler(Vector3.zero);
+        else if(direction.x < -0.01f)
+            Mytransform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+
+        rigidbody2D.AddForce(direction * speed);
 	}
 }

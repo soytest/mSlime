@@ -110,8 +110,9 @@ public class Move : Physics2DObject
 
     public void ChangeSpeedAndScale(int n)
     {
-        speed = OringinSpeed * (1 - 0.2f * n);
-        Mytransform.localScale = OringinScale * (1 + 0.2f * n);
+        float AddSize = 0.2f;
+        speed = OringinSpeed * Mathf.Pow(1 - AddSize, n);
+        Mytransform.localScale = OringinScale * Mathf.Pow(1 + AddSize, n);
     }
 
     // FixedUpdate is called every frame when the physics are calculated
